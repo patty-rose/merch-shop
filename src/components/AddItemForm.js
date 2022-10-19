@@ -19,7 +19,7 @@ function AddItemForm(props){
     <React.Fragment>
       <ReusableForm 
         formSubmissionHandler={handleAddItemFormSubmission}
-        buttonText="Add Item" />
+        buttonText="Add Item!" />
     </React.Fragment>
   );
 }
