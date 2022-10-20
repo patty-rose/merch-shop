@@ -1,6 +1,8 @@
 import React from 'react';
 import ItemList from './ItemList';
 import AddItemForm from './AddItemForm';
+import ItemDetail from './ItemDetail';
+import EditItemForm from './EditItemForm';
 
 class ShopControl extends React.Component {
 
@@ -9,7 +11,8 @@ class ShopControl extends React.Component {
     super(props);
     this.state = {
       mainItemList: [],
-      formVisible: false
+      formVisible: false,
+      selectedItem: null,
     }
   }
 
@@ -33,14 +36,37 @@ class ShopControl extends React.Component {
     const selectedItem = this.state.mainItemList.filter(item => item.id === id)[0];
     this.setState({selectedItem: selectedItem});
   }
+
+  handleEditingItemInList = (itemToEdit) => {
+    const editedMainItemList = this.state.mainItemList
+      .filter(item => item.id !== this.state.selectedItem.id)
+      .concat(itemToEdit);
+    this.setState({
+        mainItemList: editedMainItemList,
+        editing: false,
+        selectedItem: null
+      });
+  }
+
+  handleDeletingItem = (id) => {
+    const newMainItemList = this.state.mainItemList.filter(item => item.id !== id);
+    this.setState({
+      mainItemList: newMainItemList,
+      selectedItem: null
+    });
+  }
   
   //rendering:
   render(){
     let currentlyVisibleState = null;
-    if (this.state.formVisible){
+    if (this.state.editing){
+      currentlyVisibleState = <EditItemForm item = {this.state.selectedItem} onEditItem = {this.handleEditingItemInList} />
+    } else if (this.state.selectedItem != null){
+      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} onClickingDelete = {this.handleDeletingItem} onClickingEdit = {this.handleEditingItemInList} />
+    } else if (this.state.formVisible){
       currentlyVisibleState = <AddItemForm onAddItemCreation={this.handleAddItemToShop} />;
     } else {
-      currentlyVisibleState = <ItemList itemList = {this.state.mainItemList} />;
+      currentlyVisibleState = <ItemList itemList={this.state.mainItemList} onItemSelection={this.handleChangingSelectedItem}/>;
     }
 
     return (
