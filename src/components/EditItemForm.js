@@ -9,7 +9,8 @@ function EditItemForm (props) {
     event.preventDefault();
     props.onEditItem({
       title: event.target.title.value,
-      price: event.target.price.value, description: event.target.description.value, 
+      price: parseInt(event.target.price.value), 
+      description: event.target.description.value, 
       id: item.id});
   }
 

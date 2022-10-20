@@ -13,6 +13,7 @@ class ShopControl extends React.Component {
       mainItemList: [],
       formVisible: false,
       selectedItem: null,
+      editing: false,
     }
   }
 
